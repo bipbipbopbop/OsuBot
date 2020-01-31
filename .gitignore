@@ -21,3 +21,9 @@
 
 # Visual Code gitignore:
 .vscode
+
+# CMake gitignore:
+build/
+
+## Generated files
+source/OsuBotConfig.h

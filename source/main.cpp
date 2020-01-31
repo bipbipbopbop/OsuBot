@@ -3,11 +3,19 @@
 
 #include "Parser/OsuParser.hpp"
 
+#ifdef HAS_CONFIG_FILE
+# include "OsuBotConfig.h"
+#endif// HAS_CONFIG_FILE
+
 int main(int ac, char **av)
 {
 	if (ac != 2)
 	{
-		std::cout << "Usage: ./OsuBot <filename>" << std::endl;
+		std::cout << "OsuBot: A bot that play Osu for you!" << std::endl;
+#ifdef OSUBOT_CONFIG_H
+		std::cout << "\tVersion " << VERSION << std::endl;
+#endif// OSUBOT_CONFIG_H
+		std::cout << std::endl << "Usage: " << av[0] << " <filename>" << std::endl;
 		return 0;
 	}
 

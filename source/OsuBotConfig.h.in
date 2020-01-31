@@ -1,0 +1,7 @@
+// CMake config file for OsuBot Project
+#ifndef OSUBOT_CONFIG_H
+# define OSUBOT_CONFIG_H
+
+# define VERSION	("@OsuBot_VERSION_MAJOR@" "." "@OsuBot_VERSION_MINOR@")
+
+#endif// !OSUBOT_CONFIG_H
