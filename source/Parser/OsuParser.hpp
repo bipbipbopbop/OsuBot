@@ -39,6 +39,7 @@ public:
 	std::string		getFilename(void) const;
 
 	// debug
+	std::string		log(void);
 	void			dump(void) const;
 
 private:
@@ -47,6 +48,7 @@ private:
 	std::string		_filename;
 	std::ifstream	_fstream;
 	SectionList		_fileContent;
+	std::string		_log;
 };
 
 

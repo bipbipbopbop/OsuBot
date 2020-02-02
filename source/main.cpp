@@ -26,6 +26,7 @@ int main(int ac, char **av)
 	parser.parse(filename);
 	std::cout << "dumping " << filename << std::endl;
 	parser.dump();
+	std::cout << "log:\n" << parser.log();
 
 	return 0;
 }

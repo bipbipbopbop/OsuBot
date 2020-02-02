@@ -23,13 +23,13 @@ bool					OsuParser::parse(std::string filename)
 	if (filename != "")
 		this->_filename = filename;
 
-	// reset what have already been parsed
+	// reset what has already been parsed
 	this->_fileContent = OsuParser::SectionList();
 
 	this->_fstream.open(this->_filename);
 	if (!this->_fstream.is_open() && this->_fstream.fail())
 	{
-		std::cerr << "Error: can't open \"" << this->_filename << "\"\n";
+		this->_log += "Error: can't open \"" + this->_filename + "\"\n";
 		return false;
 	}
 
@@ -48,6 +48,12 @@ bool					OsuParser::_internal_parse(void)
 	std::string			currentSection;
 	size_t				ValueIndex = 0;// Used when no key is provided
 
+	// Check if the file is a .osu file
+	if (!std::getline(this->_fstream, currentLine) || currentLine.find("osu file format") == std::string::npos)
+	{
+		this->_log += "Error: \"" + this->_filename + "\" is not a valid .osu file.\n";
+		return false;
+	}
 	while (std::getline(this->_fstream, currentLine))
 	{
 		if (std::regex_match(currentLine, commentRegex))
@@ -61,7 +67,7 @@ bool					OsuParser::_internal_parse(void)
 		}
 		else if (std::regex_match(currentLine, regexResult, keyRegex))
 		{// it's a Value
-			Key	key;
+			OsuParser::Key	key;
 			if (regexResult[1].str() == "")
 				key = ValueIndex++;
 			else
@@ -104,6 +110,11 @@ const OsuParser::Section	&OsuParser::getSection(const std::string &sectName) con
 std::string				OsuParser::getFilename(void) const
 {
 	return this->_filename;
+}
+
+std::string				OsuParser::log(void)
+{
+	return std::move(this->_log);
 }
 
 void					OsuParser::dump(void) const
