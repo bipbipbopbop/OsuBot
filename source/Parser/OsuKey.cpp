@@ -49,10 +49,11 @@ bool		OsuKey::operator==(const OsuKey &other) const
 {
 	if (this->_type != other._type)
 		return false;
-	
+
 	switch (this->_type)
 	{
 		case OsuKey::Tag::EMPTY:
+		default:
 			return true;
 		case OsuKey::Tag::INDEX:
 			return *(size_t*)this->_val == *(size_t*)other._val;

@@ -6,14 +6,16 @@ project(OsuBot VERSION 0.1.0)
 # C++ Compilation specs
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 
 ### Main Executable ###
 add_executable(${PROJECT_NAME})
 set(SRC_DIR "source/")
 
 # generate Config file
-find_file(__CONFIG_FILE ${PROJECT_NAME}Config.h.in ${CMAKE_SOURCE_DIR}/${SRC_DIR})
+find_file(__CONFIG_FILE
+    ${PROJECT_NAME}Config.h.in
+    ${CMAKE_SOURCE_DIR}/${SRC_DIR}
+)
 if(EXISTS ${__CONFIG_FILE})
     string(REGEX REPLACE ".*/([^/]*)\\.in" "\\1" CONFIG_FILE ${__CONFIG_FILE})
     target_compile_definitions(${PROJECT_NAME} PRIVATE HAS_CONFIG_FILE)
@@ -29,7 +31,6 @@ set(SRC
     Parser/OsuKey.cpp
     Parser/OsuParser.cpp
 )
-
 set(INC
     ${CONFIG_FILE}
     Parser/OsuKey.hpp
@@ -44,6 +45,7 @@ target_sources(${PROJECT_NAME} PRIVATE ${SRC} ${INC})
 target_include_directories(${PROJECT_NAME} PRIVATE
                            ${SRC_DIR}
 )
+target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Werror -Wextra -g)
 
 
 ### Tests ###
