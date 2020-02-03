@@ -84,11 +84,11 @@ bool					OsuParser::_internal_parse(void)
 }
 
 
-std::string				OsuParser::getVal(const std::string &sectName, const std::string &keyName) const
+std::string				OsuParser::getVal(const std::string &sectName, const OsuParser::Key key) const
 {
 	try
 	{
-		return this->_fileContent.at(sectName).at(keyName);
+		return this->_fileContent.at(sectName).at(key);
 	}
 	catch (std::out_of_range &e)
 	{

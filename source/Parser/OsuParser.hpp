@@ -31,10 +31,7 @@ public:
 	bool			isParsed(void) const;
 	bool			parse(std::string filename = "");// empty string == parse the current file.
 
-	// getVal() work only for values with a string Key.
-	// Since values with no string Key are grouped in the same Section,
-	// you should call getSection instead.
-	std::string		getVal(const std::string &sectName, const std::string &keyName) const;
+	std::string		getVal(const std::string &sectName, const Key key) const;
 	const Section	&getSection(const std::string &sectName) const;
 	std::string		getFilename(void) const;
 
