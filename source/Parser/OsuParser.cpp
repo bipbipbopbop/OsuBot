@@ -7,7 +7,7 @@
 
 
 OsuParser::OsuParser(const std::string &filename)
-	: _filename(filename)
+	: _filename(filename), _fileVersion(0)
 {
 	this->parse();
 }
@@ -15,7 +15,7 @@ OsuParser::OsuParser(const std::string &filename)
 
 bool					OsuParser::isParsed(void) const
 {
-	return !(this->_filename == "" || this->_fileContent.empty());
+	return !(this->_filename == "" || this->_fileVersion <= 0 || this->_fileContent.empty());
 }
 
 bool					OsuParser::parse(std::string filename)
@@ -25,6 +25,7 @@ bool					OsuParser::parse(std::string filename)
 
 	// reset what has already been parsed
 	this->_fileContent = OsuParser::SectionList();
+	this->_fileVersion = 0;
 
 	this->_fstream.open(this->_filename);
 	if (!this->_fstream.is_open() && this->_fstream.fail())
@@ -41,6 +42,7 @@ bool					OsuParser::parse(std::string filename)
 bool					OsuParser::_internal_parse(void)
 {
 	std::string			currentLine;
+	const std::regex	versionRegex("^osu file format v([0-9]+)\r$");
 	const std::regex	sectionRegex("\\[([a-zA-Z]+)\\]\r$");
 	const std::regex	keyRegex("(?:([a-zA-Z0-9]+)\\s?:\\s?)?(.+)\r$");
 	const std::regex	commentRegex("^//.*\r$");
@@ -49,11 +51,13 @@ bool					OsuParser::_internal_parse(void)
 	size_t				ValueIndex = 0;// Used when no key is provided
 
 	// Check if the file is a .osu file
-	if (!std::getline(this->_fstream, currentLine) || currentLine.find("osu file format") == std::string::npos)
+	if (!std::getline(this->_fstream, currentLine) || !std::regex_match(currentLine, regexResult, versionRegex))
 	{
 		this->_log += "Error: \"" + this->_filename + "\" is not a valid .osu file.\n";
 		return false;
 	}
+	else
+		this->_fileVersion = std::stoi(regexResult[1].str());
 	while (std::getline(this->_fstream, currentLine))
 	{
 		if (std::regex_match(currentLine, commentRegex))
@@ -119,6 +123,13 @@ std::string				OsuParser::log(void)
 
 void					OsuParser::dump(void) const
 {
+	if (this->_fileVersion <= 0)
+	{
+		std::cerr << "Invalid file ; no dump performed.\n";
+		return ;
+	}
+	else
+		std::cout << "osu file format v" << this->_fileVersion << std::endl << std::endl;
 	for (auto &sect : this->_fileContent)
 	{
 		std::cout << "[" << sect.first << "]\n";

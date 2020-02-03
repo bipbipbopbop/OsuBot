@@ -48,6 +48,7 @@ private:
 	std::string		_filename;
 	std::ifstream	_fstream;
 	SectionList		_fileContent;
+	int				_fileVersion;
 	std::string		_log;
 };
 
