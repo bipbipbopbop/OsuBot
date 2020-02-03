@@ -49,21 +49,13 @@ target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Werror -Wextra -g)
 
 
 ### Tests ###
-enable_testing()
+option(ENABLE_TESTS "Enable tests" OFF)
+if (${ENABLE_TESTS})
+    enable_testing()
+    set(TEST_SRC_DIR ${CMAKE_SOURCE_DIR}/tests/source)
+    add_subdirectory(${TEST_SRC_DIR})
+endif()
 
-#add_executable(ParserTest ParserTest.cpp Parser/*.cpp)
-add_test(NAME Parse COMMAND ${PROJECT_NAME} TestFiles/DefaultTestFile)
-set_tests_properties(Parse PROPERTIES
-    REQUIRED_FILES ${CMAKE_SOURCE_DIR}/TestFiles/DefaultTestFile
-)
-#set_tests_properties(Parse
-#    PROPERTIES __IS_SAME testFiles/DefaultTestFile# may need a program to compare the values with .osu file
-#)
-
-add_test(NAME Usage COMMAND ${PROJECT_NAME})
-set_tests_properties(Usage PROPERTIES
-    PASS_REGULAR_EXPRESSION "Version [0-9]+\\.[0-9]+"
-)
 
 ### Installer ###
 # Maybe one day ?
