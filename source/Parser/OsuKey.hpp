@@ -7,7 +7,8 @@
 /*
  * Values may or may not be represented by a Key.
  * A Key may or may not be associated with a value. A Key is represented by
- * a OsuKey class, wich hold either a size_t (used as an index) or a std::string.
+ * a OsuKey class, wich hold either a size_t (used as an index for unnamed values)
+ * or a std::string.
  */
 class OsuKey
 {
