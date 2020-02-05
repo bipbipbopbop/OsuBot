@@ -14,7 +14,7 @@ set(SRC_DIR "source/")
 # generate Config file (CONFIG_FILE var)
 find_file(__CONFIG_FILE
     ${PROJECT_NAME}Config.h.in
-    ${CMAKE_SOURCE_DIR}/Cmake_files
+    ${CMAKE_SOURCE_DIR}/cmake
 )
 if(EXISTS ${__CONFIG_FILE})
     string(REGEX REPLACE ".*/([^/]*)\\.in" "\\1" CONFIG_FILE ${__CONFIG_FILE})
