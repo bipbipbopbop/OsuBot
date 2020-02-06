@@ -9,7 +9,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 ### Main Executable ###
 add_executable(${PROJECT_NAME})
-set(SRC_DIR "source/")
+set(REL_SRC_DIR "source")
+set(SRC_DIR ${CMAKE_SOURCE_DIR}/${REL_SRC_DIR})
 
 # generate Config file (CONFIG_FILE var)
 find_file(__CONFIG_FILE
@@ -19,7 +20,7 @@ find_file(__CONFIG_FILE
 if(EXISTS ${__CONFIG_FILE})
     string(REGEX REPLACE ".*/([^/]*)\\.in" "\\1" CONFIG_FILE ${__CONFIG_FILE})
     target_compile_definitions(${PROJECT_NAME} PRIVATE HAS_CONFIG_FILE)
-    configure_file(${__CONFIG_FILE} ${CMAKE_SOURCE_DIR}/${SRC_DIR}${CONFIG_FILE})
+    configure_file(${__CONFIG_FILE} ${SRC_DIR}/${CONFIG_FILE})
 else()
     set(CONFIG_FILE "")
 endif()
@@ -37,13 +38,13 @@ set(INC
     Parser/OsuParser.hpp
 )
 
-list(TRANSFORM SRC PREPEND ${SRC_DIR})
-list(TRANSFORM INC PREPEND ${SRC_DIR})
+list(TRANSFORM SRC PREPEND ${REL_SRC_DIR})
+list(TRANSFORM INC PREPEND ${REL_SRC_DIR})
 
 # build target
 target_sources(${PROJECT_NAME} PRIVATE ${SRC} ${INC})
 target_include_directories(${PROJECT_NAME} PRIVATE
-                           ${SRC_DIR}
+                           ${REL_SRC_DIR}
 )
 target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Werror -Wextra -g)
 
@@ -52,8 +53,8 @@ target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Werror -Wextra -g)
 option(ENABLE_TESTS "Enable tests" OFF)
 if (${ENABLE_TESTS})
     enable_testing()
-    set(TEST_SRC_DIR ${CMAKE_SOURCE_DIR}/tests/source)
-    add_subdirectory(${TEST_SRC_DIR})
+    set(TESTS_DIR ${CMAKE_SOURCE_DIR}/tests)
+    add_subdirectory(${TESTS_DIR})
 endif()
 
 

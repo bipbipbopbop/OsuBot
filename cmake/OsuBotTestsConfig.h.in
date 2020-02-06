@@ -1,0 +1,10 @@
+// CMake config file for OsuBot Project unit tests
+// Destination: tests/source/OsuBotTestsConfig.h
+
+#ifndef OSUBOT_TESTS_CONFIG_H
+# define OSUBOT_TESTS_CONFIG_H
+
+
+constexpr char DataPath[] = "@TESTS_DATA_DIR@";
+
+#endif// !OSUBOT_TESTS_CONFIG_H

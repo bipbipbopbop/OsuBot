@@ -10,3 +10,4 @@ build/
 
 ## Generated files
 source/OsuBotConfig.h
+tests/source/OsuBotTestsConfig.h

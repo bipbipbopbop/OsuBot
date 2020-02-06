@@ -3,12 +3,22 @@
 #include <type_traits>
 
 #include "Parser/OsuParser.hpp"
+#include "OsuBotTestsConfig.h"
 
 bool	test1(OsuParser &parser)
 {
 	bool	res = true;
 
-	// Class cpp feature (cpy/move op, ...)
+	if (std::is_copy_constructible<OsuParser>::value
+		|| std::is_copy_assignable<OsuParser>::value)
+		res &= false;
+
+	OsuParser	dummy(std::string(DataPath) + "/Default");
+	if (!dummy.isParsed())
+	{
+		std::cout << dummy.log() << std::endl;
+		res &= false;
+	}	
 
 	// no file, wrong file, check getFilename...
 

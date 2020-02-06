@@ -7,20 +7,22 @@ set(TESTPARSER_SRC
     OsuKey.cpp
     OsuKey.hpp
 )
-list(TRANSFORM TESTPARSER_SRC PREPEND ${CMAKE_SOURCE_DIR}/${SRC_DIR}Parser/)
-
-add_executable(TestParser
-    ${TEST_SRC_DIR}/TestParser/main.cpp
-    ${TESTPARSER_SRC}
+list(TRANSFORM TESTPARSER_SRC PREPEND ${SRC_DIR}/Parser/)
+list(APPEND TESTPARSER_SRC
+     ${TESTS_SRC_DIR}/${TESTS_CONFIG_FILE}
+     ${TESTS_SRC_DIR}/TestParser/main.cpp
 )
+
+add_executable(TestParser ${TESTPARSER_SRC})
 target_include_directories(TestParser PRIVATE
-                           ${CMAKE_SOURCE_DIR}/${SRC_DIR}
+                           ${SRC_DIR}
+                           ${TESTS_SRC_DIR}
 )
 unset(TESTPARSER_SRC)
 
 add_test(NAME Parser COMMAND TestParser)
 set_tests_properties(Parser PROPERTIES
-#    REQUIRED_FILES ${CMAKE_SOURCE_DIR}/tests/data/Default
-#    REQUIRED_FILES "${CMAKE_SOURCE_DIR}/tests/data/Team Nekokan - Can't Defeat Airman (Blue Dragon) [Holy Shit! It's Airman!!].osu"
+    REQUIRED_FILES ${TESTS_DATA_DIR}/Default
+#    REQUIRED_FILES "${TESTS_DATA_DIR}/Team Nekokan - Can't Defeat Airman (Blue Dragon) [Holy Shit! It's Airman!!].osu"
     PASS_REGULAR_EXPRESSION "Success!"
 )
