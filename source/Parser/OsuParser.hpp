@@ -19,14 +19,12 @@ public:
 	using Section		= std::map<Key, std::string>;
 	using SectionList	= std::map<std::string, Section>;
 
-	OsuParser(void) = default;
-	OsuParser(const OsuParser &) = default;
+	OsuParser(std::string filename = "");
+	OsuParser(const OsuParser &) = delete;
 	OsuParser(OsuParser &&) = default;
 	~OsuParser(void) = default;
+	OsuParser &operator=(const OsuParser &) = delete;
 	OsuParser &operator=(OsuParser &&) = default;
-	OsuParser &operator=(const OsuParser &) = default;
-
-	OsuParser(const std::string &filename);
 
 	bool			isParsed(void) const;
 	bool			parse(std::string filename = "");// empty string == parse the current file.
@@ -40,13 +38,13 @@ public:
 	void			dump(void) const;
 
 private:
-	bool			_internal_parse(void);
+	bool			_internal_parse(std::ifstream &fstream);
 
 	std::string		_filename;
-	std::ifstream	_fstream;
 	SectionList		_fileContent;
 	int				_fileVersion;
 	std::string		_log;
+	bool			_isParsed;
 };
 
 

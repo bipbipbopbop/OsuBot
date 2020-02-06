@@ -6,40 +6,48 @@
 #include "OsuKey.hpp"
 
 
-OsuParser::OsuParser(const std::string &filename)
-	: _filename(filename), _fileVersion(0)
+OsuParser::OsuParser(std::string filename)
+	: _filename(std::move(filename)), _fileVersion(0), _isParsed(false)
 {
-	this->parse();
+	if (this->_filename != "")
+		this->parse();
 }
 
 
 bool					OsuParser::isParsed(void) const
 {
-	return !(this->_filename == "" || this->_fileVersion <= 0 || this->_fileContent.empty());
+	return this->_isParsed;
 }
 
 bool					OsuParser::parse(std::string filename)
 {
+	std::ifstream	fstream;
+
 	if (filename != "")
-		this->_filename = filename;
+		this->_filename = filename;	
+	if (this->_filename == "")
+	{
+		this->_log += "Error: no file provided.\n";
+		return false;
+	}
 
 	// reset what has already been parsed
 	this->_fileContent = OsuParser::SectionList();
 	this->_fileVersion = 0;
 
-	this->_fstream.open(this->_filename);
-	if (!this->_fstream.is_open() && this->_fstream.fail())
+	fstream.open(this->_filename);
+	if (!fstream.is_open() && fstream.fail())
 	{
 		this->_log += "Error: can't open \"" + this->_filename + "\"\n";
 		return false;
 	}
 
-	bool	res = this->_internal_parse();
-	this->_fstream.close();
-	return res;
+	this->_isParsed = this->_internal_parse(fstream);
+	fstream.close();
+	return this->_isParsed;
 }
 
-bool					OsuParser::_internal_parse(void)
+bool					OsuParser::_internal_parse(std::ifstream &fstream)
 {
 	std::string			currentLine;
 	const std::regex	versionRegex("^osu file format v([0-9]+)\r$");
@@ -51,14 +59,14 @@ bool					OsuParser::_internal_parse(void)
 	size_t				ValueIndex = 0;// Used when no key is provided
 
 	// Check if the file is a .osu file
-	if (!std::getline(this->_fstream, currentLine) || !std::regex_match(currentLine, regexResult, versionRegex))
+	if (!std::getline(fstream, currentLine) || !std::regex_match(currentLine, regexResult, versionRegex))
 	{
 		this->_log += "Error: \"" + this->_filename + "\" is not a valid .osu file.\n";
 		return false;
 	}
 	else
 		this->_fileVersion = std::stoi(regexResult[1].str());
-	while (std::getline(this->_fstream, currentLine))
+	while (std::getline(fstream, currentLine))
 	{
 		if (std::regex_match(currentLine, commentRegex))
 		{// it's a Comment
