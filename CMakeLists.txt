@@ -38,8 +38,8 @@ set(INC
     Parser/OsuParser.hpp
 )
 
-list(TRANSFORM SRC PREPEND ${REL_SRC_DIR})
-list(TRANSFORM INC PREPEND ${REL_SRC_DIR})
+list(TRANSFORM SRC PREPEND ${REL_SRC_DIR}/)
+list(TRANSFORM INC PREPEND ${REL_SRC_DIR}/)
 
 # build target
 target_sources(${PROJECT_NAME} PRIVATE ${SRC} ${INC})

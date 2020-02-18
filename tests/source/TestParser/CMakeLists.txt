@@ -23,6 +23,5 @@ unset(TESTPARSER_SRC)
 add_test(NAME Parser COMMAND TestParser)
 set_tests_properties(Parser PROPERTIES
     REQUIRED_FILES ${TESTS_DATA_DIR}/Default
-#    REQUIRED_FILES "${TESTS_DATA_DIR}/Team Nekokan - Can't Defeat Airman (Blue Dragon) [Holy Shit! It's Airman!!].osu"
     PASS_REGULAR_EXPRESSION "Success!"
 )
