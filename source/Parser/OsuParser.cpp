@@ -118,11 +118,22 @@ const OsuParser::Section	&OsuParser::getSection(const std::string &sectName) con
 	}
 }
 
-
 std::string				OsuParser::getFilename(void) const
 {
 	return this->_filename;
 }
+
+
+OsuParser::SectionList::const_iterator	OsuParser::cbegin() const noexcept
+{
+	return this->_fileContent.cbegin();
+}
+
+OsuParser::SectionList::const_iterator	OsuParser::cend() const noexcept
+{
+	return this->_fileContent.cend();
+}
+
 
 std::string				OsuParser::log(void)
 {

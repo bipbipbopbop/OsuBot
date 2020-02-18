@@ -13,6 +13,8 @@ public:
 	/* A .osu file is very similar to a .ini file. It is composed of Sections.
 	 * A Section is a list of Values. (represented as a std::string).
 	 * Values may or may not be represented by a Key (see OsuKey.hpp).
+	 * 
+	 * Minimal .osu file version tested: v3
 	 */
 
 	using Key			= OsuKey;
@@ -32,6 +34,9 @@ public:
 	std::string		getVal(const std::string &sectName, const Key key) const;
 	const Section	&getSection(const std::string &sectName) const;
 	std::string		getFilename(void) const;
+
+	SectionList::const_iterator	cbegin() const noexcept;
+	SectionList::const_iterator	cend() const noexcept;
 
 	// debug
 	std::string		log(void);
