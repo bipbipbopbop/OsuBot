@@ -13,14 +13,20 @@ bool	test1(OsuParser &parser)
 		|| std::is_copy_assignable<OsuParser>::value)
 		res &= false;
 
-	OsuParser	dummy(std::string(DataPath) + "/Default");
-	if (!dummy.isParsed())
+	OsuParser	dummy;
 	{
-		std::cout << dummy.log() << std::endl;
-		res &= false;
-	}	
-
-	// no file, wrong file, check getFilename...
+		dummy.parse("/wrongfile");
+		std::string	filename = dummy.getFilename();
+		OsuParser	movedParser(std::move(dummy));
+		if (movedParser.isParsed()
+			|| movedParser.log().size() == 0
+			|| movedParser.getFilename() != filename
+			|| movedParser.cbegin() != movedParser.cend())
+		{
+			std::cout << "Error in move op" << std::endl;
+			res &= false;
+		}
+	}
 
 	return res;
 }
@@ -28,8 +34,40 @@ bool	test1(OsuParser &parser)
 bool	test2(OsuParser &parser)
 {
 	bool	res = true;
+	std::string	defaultPath(std::string(DataPath) + "/Default");
+	OsuParser	defaultMap(defaultPath);
 
-	// Default test file, check get* funcs on error and for common keys
+	if (!defaultMap.isParsed()
+		|| defaultMap.getFilename() != defaultPath
+		|| defaultMap.cbegin() == defaultMap.cend())
+	{
+		std::string	log = defaultMap.log();
+
+		if (log.size() == 0)
+			log = "Undetected error while parsing \"" + defaultPath + "\".";
+		std::cout << log << std::endl;
+		res &= false;
+	}
+
+	if (defaultMap.getSection("General") == defaultMap.getSection("FakeSection")
+		|| defaultMap.getSection("Metadata") == defaultMap.getSection("FakeSection")
+		|| defaultMap.getSection("Difficulty") == defaultMap.getSection("FakeSection")
+		|| defaultMap.getSection("Events") == defaultMap.getSection("FakeSection")
+		|| defaultMap.getSection("TimingPoints") == defaultMap.getSection("FakeSection")
+		|| defaultMap.getSection("HitObjects") == defaultMap.getSection("FakeSection"))
+	{
+		std::cout << "Error: Incomplete file parsing for beatmap \"" << defaultPath + "\"." << std::endl;
+		res &= false;
+	}
+
+	const OsuParser::Section &general = defaultMap.getSection("General");
+	const OsuParser::Section &meta = defaultMap.getSection("Metadata");
+	if (defaultMap.getVal("General", std::string("AudioFilename")) == ""
+		|| defaultMap.getVal("Metadata", std::string("Title")) == "")
+	{
+		std::cout << "Error: Incomplete sections parsing for beatmap \"" << defaultPath + "\"." << std::endl;
+		res &= false;
+	}
 
 	return res;
 }
