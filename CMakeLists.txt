@@ -34,6 +34,7 @@ set(SRC
 )
 set(INC
     ${CONFIG_FILE}
+    Logger/Logger.hpp
     Parser/OsuKey.hpp
     Parser/OsuParser.hpp
 )
