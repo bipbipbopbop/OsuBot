@@ -2,6 +2,7 @@
 #include <iostream>
 #include <type_traits>
 
+#include "Logger/Logger.hpp"
 #include "Parser/OsuParser.hpp"
 #include "OsuBotTestsConfig.h"
 
@@ -19,11 +20,10 @@ bool	test1(OsuParser &parser)
 		std::string	filename = dummy.getFilename();
 		OsuParser	movedParser(std::move(dummy));
 		if (movedParser.isParsed()
-			|| movedParser.log().size() == 0
 			|| movedParser.getFilename() != filename
 			|| movedParser.cbegin() != movedParser.cend())
 		{
-			std::cout << "Error in move op" << std::endl;
+			LOG(LogLevel::ERROR, "error in OsuParser move op");
 			res &= false;
 		}
 	}
@@ -41,11 +41,7 @@ bool	test2(OsuParser &parser)
 		|| defaultMap.getFilename() != defaultPath
 		|| defaultMap.cbegin() == defaultMap.cend())
 	{
-		std::string	log = defaultMap.log();
-
-		if (log.size() == 0)
-			log = "Undetected error while parsing \"" + defaultPath + "\".";
-		std::cout << log << std::endl;
+		LOG(LogLevel::ERROR, "error while parsing \"", defaultPath, "\".");
 		res &= false;
 	}
 
@@ -56,7 +52,7 @@ bool	test2(OsuParser &parser)
 		|| defaultMap.getSection("TimingPoints") == defaultMap.getSection("FakeSection")
 		|| defaultMap.getSection("HitObjects") == defaultMap.getSection("FakeSection"))
 	{
-		std::cout << "Error: Incomplete file parsing for beatmap \"" << defaultPath + "\"." << std::endl;
+		LOG(LogLevel::ERROR, "Incomplete file parsing for beatmap \"", defaultPath, "\".");
 		res &= false;
 	}
 
@@ -65,7 +61,7 @@ bool	test2(OsuParser &parser)
 	if (defaultMap.getVal("General", std::string("AudioFilename")) == ""
 		|| defaultMap.getVal("Metadata", std::string("Title")) == "")
 	{
-		std::cout << "Error: Incomplete sections parsing for beatmap \"" << defaultPath + "\"." << std::endl;
+		LOG(LogLevel::ERROR, "Incomplete sections parsing for beatmap \"", defaultPath, "\".");
 		res &= false;
 	}
 
@@ -85,22 +81,24 @@ int		main(int ac, char **av)
 {
 	OsuParser	parser;
 	bool		OK = true;
+	Logger::level = LogLevel::DEBUG;
+	Logger::sinks.add(std::cout);
 
-	std::cout << "##### OsuParser Class Tests #####\n\n";
+	LOG(LogLevel::INFO, "##### OsuParser Class Tests #####");
 	
-	std::cout << "\tImplementation behavior & I/O testing...\t";
+	LOG(LogLevel::INFO, "\tImplementation behavior & I/O testing...");
 	OK &= test1(parser);
-	std::cout << "Done\n";
+	LOG(LogLevel::INFO, "\tDone\n");
 
-	std::cout << "\tBasic testing...\t\t\t\t";
+	LOG(LogLevel::INFO, "\tBasic testing...");
 	OK &= test2(parser);
-	std::cout << "Done\n";
+	LOG(LogLevel::INFO, "\tDone");
 
-	std::cout << "\tAdvanced testing...\t\t\t\t";
+	LOG(LogLevel::INFO, "\tAdvanced testing...");
 	OK &= test3(parser);
-	std::cout << "Done\n";
+	LOG(LogLevel::INFO, "\tDone");
 
-	std::cout << "\nResult of the test (see log file): " << (OK ? "Success!" : "Error") << std::endl;
-	std::cout << "#################################\n";
+	LOG(LogLevel::INFO, "Result of the test (see log file): ", (OK ? "Success!" : "Error"));
+	LOG(LogLevel::INFO, "#################################");
 	return 0;
 }

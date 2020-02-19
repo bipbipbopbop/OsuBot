@@ -4,6 +4,7 @@
 
 #include "OsuParser.hpp"
 #include "OsuKey.hpp"
+#include "Logger/Logger.hpp"
 
 
 OsuParser::OsuParser(std::string filename)
@@ -27,7 +28,7 @@ bool					OsuParser::parse(std::string filename)
 		this->_filename = filename;	
 	if (this->_filename == "")
 	{
-		this->_log += "Error: no file provided.\n";
+		LOG(LogLevel::WARNING, "OsuParser: no file provided ; no parsing performed.");
 		return false;
 	}
 
@@ -38,7 +39,7 @@ bool					OsuParser::parse(std::string filename)
 	fstream.open(this->_filename);
 	if (!fstream.is_open() && fstream.fail())
 	{
-		this->_log += "Error: can't open \"" + this->_filename + "\"\n";
+		LOG(LogLevel::ERROR, "OsuParser: can't open \"", this->_filename, '\"');
 		return false;
 	}
 
@@ -61,7 +62,7 @@ bool					OsuParser::_internal_parse(std::ifstream &fstream)
 	// Check if the file is a .osu file
 	if (!std::getline(fstream, currentLine) || !std::regex_match(currentLine, regexResult, versionRegex))
 	{
-		this->_log += "Error: \"" + this->_filename + "\" is not a valid .osu file.\n";
+		LOG(LogLevel::WARNING, "OsuParser: \"", this->_filename, "\" is not a valid .osu file.");
 		return false;
 	}
 	else
@@ -134,11 +135,6 @@ OsuParser::SectionList::const_iterator	OsuParser::cend() const noexcept
 	return this->_fileContent.cend();
 }
 
-
-std::string				OsuParser::log(void)
-{
-	return std::move(this->_log);
-}
 
 void					OsuParser::dump(void) const
 {

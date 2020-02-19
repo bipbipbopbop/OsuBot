@@ -39,7 +39,6 @@ public:
 	SectionList::const_iterator	cend() const noexcept;
 
 	// debug
-	std::string		log(void);
 	void			dump(void) const;
 
 private:
