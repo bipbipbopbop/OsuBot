@@ -68,7 +68,7 @@ namespace Logger
 		time_t	time_now = std::chrono::system_clock::to_time_t(now);
 		char	buff[64]{};
 
-		std::strftime(buff, sizeof(buff), "%T", localtime(&time_now));
+		std::strftime(buff, sizeof(buff), "%H:%M:%S", localtime(&time_now));
 		int ms_part = std::chrono::time_point_cast<std::chrono::milliseconds>(now)
 			.time_since_epoch().count() % 1000;
 		snprintf(buff + strlen(buff), 5, ".%03d", ms_part);
@@ -82,7 +82,7 @@ namespace Logger
 		time_t	now = time(NULL);
 		char	buff[64]{};
 
-		std::strftime(buff, sizeof(buff), "%F", localtime(&now));
+		std::strftime(buff, sizeof(buff), "%Y-%m-%d", localtime(&now));
 
 		return buff;
 	}
