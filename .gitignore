@@ -8,6 +8,9 @@ build/
 *.exe
 *.out
 
-## Generated files
+## Generated files (compile-time)
 source/OsuBotConfig.h
 tests/source/OsuBotTestsConfig.h
+
+## Generated files (run-time)
+*.log
