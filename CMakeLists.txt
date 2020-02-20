@@ -47,8 +47,9 @@ target_sources(${PROJECT_NAME} PRIVATE ${SRC} ${INC})
 target_include_directories(${PROJECT_NAME} PRIVATE
                            ${REL_SRC_DIR}
 )
-target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Werror -Wextra -g)
-
+if(CMAKE_CXX_COMPILER_ID EQUAL "MSVC")
+    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Werror -Wextra -g)
+endif()
 
 ### Tests ###
 option(ENABLE_TESTS "Enable tests" OFF)
