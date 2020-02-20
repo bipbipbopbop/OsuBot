@@ -1,3 +1,4 @@
+#include <ostream>
 #include "OsuKey.hpp"
 
 
