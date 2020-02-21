@@ -51,10 +51,10 @@ bool					OsuParser::parse(std::string filename)
 bool					OsuParser::_internal_parse(std::ifstream &fstream)
 {
 	std::string			currentLine;
-	const std::regex	versionRegex("^osu file format v([0-9]+)\r$");
-	const std::regex	sectionRegex("\\[([a-zA-Z]+)\\]\r$");
-	const std::regex	keyRegex("(?:([a-zA-Z0-9]+)\\s?:\\s?)?(.+)\r$");
-	const std::regex	commentRegex("^//.*\r$");
+	const std::regex	versionRegex("^osu file format v([0-9]+)\r?$");
+	const std::regex	sectionRegex("\\[([a-zA-Z]+)\\]\r?$");
+	const std::regex	keyRegex("(?:([a-zA-Z0-9]+)\\s?:\\s?)?(.+)\r?$");
+	const std::regex	commentRegex("^//.*\r?$");
 	std::smatch			regexResult;
 	std::string			currentSection;
 	size_t				ValueIndex = 0;// Used when no key is provided
