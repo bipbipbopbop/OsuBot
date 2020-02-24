@@ -7,24 +7,30 @@ project(OsuBot VERSION 0.1.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+
 ### Main Executable ###
-add_executable(${PROJECT_NAME})
+add_executable(${CMAKE_PROJECT_NAME})
 set(REL_SRC_DIR "source")
 set(SRC_DIR ${CMAKE_SOURCE_DIR}/${REL_SRC_DIR})
 
 # generate Config file (CONFIG_FILE var)
 find_file(__CONFIG_FILE
-    ${PROJECT_NAME}Config.h.in
+    ${CMAKE_PROJECT_NAME}Config.h.in
     ${CMAKE_SOURCE_DIR}/cmake
 )
 if(EXISTS ${__CONFIG_FILE})
     string(REGEX REPLACE ".*/([^/]*)\\.in" "\\1" CONFIG_FILE ${__CONFIG_FILE})
-    target_compile_definitions(${PROJECT_NAME} PRIVATE HAS_CONFIG_FILE)
+    target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE HAS_CONFIG_FILE)
     configure_file(${__CONFIG_FILE} ${SRC_DIR}/${CONFIG_FILE})
 else()
     set(CONFIG_FILE "")
 endif()
 unset(__CONFIG_FILE CACHE)
+
+
+# add Logger Library
+add_subdirectory(${SRC_DIR}/Logger)
+target_link_libraries(${CMAKE_PROJECT_NAME} Logger)
 
 # source files
 set(SRC
@@ -34,7 +40,6 @@ set(SRC
 )
 set(INC
     ${CONFIG_FILE}
-    Logger/Logger.hpp
     Parser/OsuKey.hpp
     Parser/OsuParser.hpp
 )
@@ -43,12 +48,12 @@ list(TRANSFORM SRC PREPEND ${REL_SRC_DIR}/)
 list(TRANSFORM INC PREPEND ${REL_SRC_DIR}/)
 
 # build target
-target_sources(${PROJECT_NAME} PRIVATE ${SRC} ${INC})
-target_include_directories(${PROJECT_NAME} PRIVATE
+target_sources(${CMAKE_PROJECT_NAME} PRIVATE ${SRC} ${INC})
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
                            ${REL_SRC_DIR}
 )
 if(CMAKE_CXX_COMPILER_ID EQUAL "MSVC")
-    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Werror -Wextra -g)
+    target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -Wall -Werror -Wextra -g)
 endif()
 
 ### Tests ###

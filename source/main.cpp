@@ -1,8 +1,8 @@
 #include <string>
 #include <iostream>
 
+#include "jhache/Logger.hpp"
 #include "Parser/OsuParser.hpp"
-#include "Logger/Logger.hpp"
 
 #ifdef HAS_CONFIG_FILE
 # include "OsuBotConfig.h"

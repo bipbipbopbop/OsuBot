@@ -4,7 +4,7 @@
 
 #include "OsuParser.hpp"
 #include "OsuKey.hpp"
-#include "Logger/Logger.hpp"
+#include "jhache/Logger.hpp"
 
 
 OsuParser::OsuParser(std::string filename)

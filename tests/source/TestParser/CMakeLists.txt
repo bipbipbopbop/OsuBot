@@ -1,4 +1,8 @@
 ### TestParser ###
+add_executable(TestParser)
+
+## add Logger Library
+target_link_libraries(TestParser Logger)
 
 ## construct source files list
 set(TESTPARSER_SRC
@@ -13,7 +17,8 @@ list(APPEND TESTPARSER_SRC
      ${TESTS_SRC_DIR}/TestParser/main.cpp
 )
 
-add_executable(TestParser ${TESTPARSER_SRC})
+## add Source files
+target_sources(TestParser PRIVATE ${TESTPARSER_SRC})
 target_include_directories(TestParser PRIVATE
                            ${SRC_DIR}
                            ${TESTS_SRC_DIR}

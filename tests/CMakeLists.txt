@@ -6,7 +6,7 @@ set(TESTS_DATA_DIR ${TESTS_DIR}/data)
 
 # Config file
 find_file(__CONFIG_FILE
-    ${PROJECT_NAME}TestsConfig.h.in
+    ${CMAKE_PROJECT_NAME}TestsConfig.h.in
     ${CMAKE_SOURCE_DIR}/cmake
 )
 if(EXISTS ${__CONFIG_FILE})

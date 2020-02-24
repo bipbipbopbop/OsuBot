@@ -1,0 +1,3 @@
+[submodule "source/Logger"]
+	path = source/Logger
+	url = https://github.com/julienhache/Logger.git
