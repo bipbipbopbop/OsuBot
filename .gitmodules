@@ -1,3 +1,6 @@
-[submodule "source/Logger"]
-	path = source/Logger
+[submodule "source/externals/Logger"]
+	path = source/externals/Logger
 	url = https://github.com/julienhache/Logger.git
+[submodule "source/externals/jhack"]
+	path = source/externals/jhack
+	url = https://github.com/julienhache/jhack.git

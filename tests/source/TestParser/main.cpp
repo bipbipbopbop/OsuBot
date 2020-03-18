@@ -2,7 +2,7 @@
 #include <iostream>
 #include <type_traits>
 
-#include "jhache/Logger.hpp"
+#include "Logger.hpp"
 #include "Parser/OsuParser.hpp"
 #include "OsuBotTestsConfig.h"
 

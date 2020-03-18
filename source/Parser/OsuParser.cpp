@@ -2,9 +2,9 @@
 #include <algorithm>
 #include <iostream>
 
+#include "Logger.hpp"
 #include "OsuParser.hpp"
 #include "OsuKey.hpp"
-#include "jhache/Logger.hpp"
 
 
 OsuParser::OsuParser(std::string filename)

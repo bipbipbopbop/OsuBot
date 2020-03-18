@@ -1,7 +1,8 @@
 #include <string>
 #include <iostream>
 
-#include "jhache/Logger.hpp"
+#include "Logger.hpp"
+#include "jhack.hpp"
 #include "Parser/OsuParser.hpp"
 
 #ifdef HAS_CONFIG_FILE
@@ -25,6 +26,8 @@ int		main(int ac, char **av)
 		usage(av[0]);
 		return 0;
 	}
+
+	jhack::start();
 
 	const std::string	filename(av[1]);
 	OsuParser			parser;

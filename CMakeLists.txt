@@ -11,12 +11,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 ### Main Executable ###
 add_executable(${CMAKE_PROJECT_NAME})
 set(REL_SRC_DIR "source")
-set(SRC_DIR ${CMAKE_SOURCE_DIR}/${REL_SRC_DIR})
+set(SRC_DIR ${PROJECT_SOURCE_DIR}/${REL_SRC_DIR})
 
 # generate Config file (CONFIG_FILE var)
 find_file(__CONFIG_FILE
     ${CMAKE_PROJECT_NAME}Config.h.in
-    ${CMAKE_SOURCE_DIR}/cmake
+    ${PROJECT_SOURCE_DIR}/cmake
 )
 if(EXISTS ${__CONFIG_FILE})
     string(REGEX REPLACE ".*/([^/]*)\\.in" "\\1" CONFIG_FILE ${__CONFIG_FILE})
@@ -29,8 +29,14 @@ unset(__CONFIG_FILE CACHE)
 
 
 # add Logger Library
-add_subdirectory(${SRC_DIR}/Logger)
+add_subdirectory(${SRC_DIR}/externals/Logger)
 target_link_libraries(${CMAKE_PROJECT_NAME} Logger)
+set(LOGGER_SRC_DIR ${SRC_DIR}/externals/Logger/jhache)
+
+# add jhack Library
+add_subdirectory(${SRC_DIR}/externals/jhack)
+target_link_libraries(${CMAKE_PROJECT_NAME} jhack)
+set(JHACK_SRC_DIR ${SRC_DIR}/externals/jhack/source)
 
 # source files
 set(SRC
@@ -60,7 +66,7 @@ endif()
 option(ENABLE_TESTS "Enable tests" OFF)
 if (${ENABLE_TESTS})
     enable_testing()
-    set(TESTS_DIR ${CMAKE_SOURCE_DIR}/tests)
+    set(TESTS_DIR ${PROJECT_SOURCE_DIR}/tests)
     add_subdirectory(${TESTS_DIR})
 endif()
 
