@@ -29,14 +29,14 @@ unset(__CONFIG_FILE CACHE)
 
 
 # add Logger Library
-add_subdirectory(${SRC_DIR}/externals/Logger)
+add_subdirectory(${SRC_DIR}/Logger)
 target_link_libraries(${CMAKE_PROJECT_NAME} Logger)
-set(LOGGER_SRC_DIR ${SRC_DIR}/externals/Logger/jhache)
+set(LOGGER_SRC_DIR ${SRC_DIR}/Logger/jhache)
 
 # add jhack Library
-add_subdirectory(${SRC_DIR}/externals/jhack)
+add_subdirectory(${PROJECT_SOURCE_DIR}/externals/jhack)
 target_link_libraries(${CMAKE_PROJECT_NAME} jhack)
-set(JHACK_SRC_DIR ${SRC_DIR}/externals/jhack/source)
+set(JHACK_SRC_DIR ${PROJECT_SOURCE_DIR}/externals/jhack/source)
 
 # source files
 set(SRC
