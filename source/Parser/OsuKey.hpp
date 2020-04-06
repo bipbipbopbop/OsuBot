@@ -14,7 +14,7 @@ class OsuKey
 {
 public:
 	// The Tag enum define what is stored in the OsuKey.
-	enum class Tag { INDEX, STRING, EMPTY };
+	enum class Tag { Index, String, Empty };
 
 	OsuKey();
 	OsuKey(size_t val);

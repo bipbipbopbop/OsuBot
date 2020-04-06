@@ -3,22 +3,22 @@
 
 
 OsuKey::OsuKey()
-	: _type(OsuKey::Tag::EMPTY), _val(nullptr)
+	: _type(OsuKey::Tag::Empty), _val(nullptr)
 	{}
 
 OsuKey::OsuKey(size_t val)
-	: _type(OsuKey::Tag::INDEX), _val(new size_t(val))
+	: _type(OsuKey::Tag::Index), _val(new size_t(val))
 	{}
 
 OsuKey::OsuKey(std::string val)
-	: _type(OsuKey::Tag::STRING), _val(new std::string(std::move(val)))
+	: _type(OsuKey::Tag::String), _val(new std::string(std::move(val)))
 	{}
 
 OsuKey::~OsuKey()
 {
-	if (this->_type == OsuKey::Tag::INDEX)
+	if (this->_type == OsuKey::Tag::Index)
 		delete (size_t*)this->_val;
-	else if (this->_type == OsuKey::Tag::STRING)
+	else if (this->_type == OsuKey::Tag::String)
 		delete (std::string*)this->_val;
 }
 
@@ -26,9 +26,9 @@ OsuKey::~OsuKey()
 OsuKey::OsuKey(const OsuKey &other)
 	: _type(other._type), _val(nullptr)
 {
-	if (this->_type == OsuKey::Tag::INDEX)
+	if (this->_type == OsuKey::Tag::Index)
 		this->_val = new size_t(*(size_t*)other._val);
-	else if (this->_type == OsuKey::Tag::STRING)
+	else if (this->_type == OsuKey::Tag::String)
 		this->_val = new std::string(*(std::string*)other._val);
 }
 
@@ -54,11 +54,11 @@ bool		OsuKey::operator==(const OsuKey &other) const
 	switch (this->_type)
 	{
 		default:
-		case OsuKey::Tag::EMPTY:
+		case OsuKey::Tag::Empty:
 			return true;
-		case OsuKey::Tag::INDEX:
+		case OsuKey::Tag::Index:
 			return *(size_t*)this->_val == *(size_t*)other._val;
-		case OsuKey::Tag::STRING:
+		case OsuKey::Tag::String:
 			return *(std::string*)this->_val == *(std::string*)other._val;
 	}
 }
@@ -74,25 +74,25 @@ bool		OsuKey::operator<(const OsuKey &other) const
 	std::string	lhs;
 	std::string	rhs;
 
-	if (this->_type == OsuKey::Tag::INDEX && other._type == OsuKey::Tag::INDEX)
+	if (this->_type == OsuKey::Tag::Index && other._type == OsuKey::Tag::Index)
 		return *(size_t*)this->_val < *(size_t*)other._val;
 
 	switch (this->_type)
 	{
-		case OsuKey::Tag::EMPTY:
+		case OsuKey::Tag::Empty:
 			break;
-		case OsuKey::Tag::INDEX:
+		case OsuKey::Tag::Index:
 			lhs = std::to_string(this->getIndex()); break;
-		case OsuKey::Tag::STRING:
+		case OsuKey::Tag::String:
 			lhs = this->getStr(); break;
 	}
 	switch (other._type)
 	{
-		case OsuKey::Tag::EMPTY:
+		case OsuKey::Tag::Empty:
 			break;
-		case OsuKey::Tag::INDEX:
+		case OsuKey::Tag::Index:
 			rhs = std::to_string(other.getIndex()); break;
-		case OsuKey::Tag::STRING:
+		case OsuKey::Tag::String:
 			rhs = other.getStr(); break;
 	}
 	return lhs < rhs;
@@ -150,11 +150,11 @@ std::ostream	&operator<<(std::ostream &os, const OsuKey &rhs)
 {
 	switch (rhs.getType())
 	{
-		case OsuKey::Tag::EMPTY:
+		case OsuKey::Tag::Empty:
 			os << std::string("no key"); break;
-		case OsuKey::Tag::INDEX:
+		case OsuKey::Tag::Index:
 			os << std::to_string(rhs.getIndex()); break;
-		case OsuKey::Tag::STRING:
+		case OsuKey::Tag::String:
 			os << rhs.getStr(); break;
 	}
 	return os;

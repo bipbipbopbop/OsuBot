@@ -28,7 +28,7 @@ bool					OsuParser::parse(std::string filename)
 		this->_filename = filename;	
 	if (this->_filename == "")
 	{
-		LOG(LogLevel::WARNING, "OsuParser: no file provided ; no parsing performed.");
+		LOG(LogLevel::Warning, "OsuParser: no file provided ; no parsing performed.");
 		return false;
 	}
 
@@ -39,7 +39,7 @@ bool					OsuParser::parse(std::string filename)
 	fstream.open(this->_filename);
 	if (!fstream.is_open() && fstream.fail())
 	{
-		LOG(LogLevel::ERROR, "OsuParser: can't open \"", this->_filename, '\"');
+		LOG(LogLevel::Error, "OsuParser: can't open \"", this->_filename, '\"');
 		return false;
 	}
 
@@ -62,7 +62,7 @@ bool					OsuParser::_internal_parse(std::ifstream &fstream)
 	// Check if the file is a .osu file
 	if (!std::getline(fstream, currentLine) || !std::regex_match(currentLine, regexResult, versionRegex))
 	{
-		LOG(LogLevel::WARNING, "OsuParser: \"", this->_filename, "\" is not a valid .osu file.");
+		LOG(LogLevel::Warning, "OsuParser: \"", this->_filename, "\" is not a valid .osu file.");
 		return false;
 	}
 	else
@@ -99,7 +99,7 @@ std::string				OsuParser::getVal(const std::string &sectName, const OsuParser::K
 	{
 		return this->_fileContent.at(sectName).at(key);
 	}
-	catch (std::out_of_range &e)
+	catch (std::out_of_range &)
 	{
 		return "";
 	}
@@ -113,7 +113,7 @@ const OsuParser::Section	&OsuParser::getSection(const std::string &sectName) con
 	{
 		return this->_fileContent.at(sectName);
 	}
-	catch (std::out_of_range &e)
+	catch (std::out_of_range &)
 	{
 		return dummy;
 	}

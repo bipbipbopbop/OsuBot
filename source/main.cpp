@@ -32,9 +32,9 @@ int		main(int ac, char **av)
 	const std::string	filename(av[1]);
 	OsuParser			parser;
 
-	LOG(LogLevel::INFO, "Parsing ", filename);
+	LOG(LogLevel::Info, "Parsing ", filename);
 	parser.parse(filename);
-	LOG(LogLevel::INFO, "dumping ", filename);
+	LOG(LogLevel::Info, "dumping ", filename);
 	parser.dump();
 
 	return 0;

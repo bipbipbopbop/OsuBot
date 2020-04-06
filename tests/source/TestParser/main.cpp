@@ -23,7 +23,7 @@ bool	test1(OsuParser &parser)
 			|| movedParser.getFilename() != filename
 			|| movedParser.cbegin() != movedParser.cend())
 		{
-			LOG(LogLevel::ERROR, "error in OsuParser move op");
+			LOG(LogLevel::Error, "error in OsuParser move op");
 			res &= false;
 		}
 	}
@@ -41,7 +41,7 @@ bool	test2(OsuParser &parser)
 		|| defaultMap.getFilename() != defaultPath
 		|| defaultMap.cbegin() == defaultMap.cend())
 	{
-		LOG(LogLevel::ERROR, "error while parsing \"", defaultPath, "\".");
+		LOG(LogLevel::Error, "error while parsing \"", defaultPath, "\".");
 		res &= false;
 	}
 
@@ -52,7 +52,7 @@ bool	test2(OsuParser &parser)
 		|| defaultMap.getSection("TimingPoints") == defaultMap.getSection("FakeSection")
 		|| defaultMap.getSection("HitObjects") == defaultMap.getSection("FakeSection"))
 	{
-		LOG(LogLevel::ERROR, "Incomplete file parsing for beatmap \"", defaultPath, "\".");
+		LOG(LogLevel::Error, "Incomplete file parsing for beatmap \"", defaultPath, "\".");
 		res &= false;
 	}
 
@@ -61,7 +61,7 @@ bool	test2(OsuParser &parser)
 	if (defaultMap.getVal("General", std::string("AudioFilename")) == ""
 		|| defaultMap.getVal("Metadata", std::string("Title")) == "")
 	{
-		LOG(LogLevel::ERROR, "Incomplete sections parsing for beatmap \"", defaultPath, "\".");
+		LOG(LogLevel::Error, "Incomplete sections parsing for beatmap \"", defaultPath, "\".");
 		res &= false;
 	}
 
@@ -81,24 +81,24 @@ int		main(int ac, char **av)
 {
 	OsuParser	parser;
 	bool		OK = true;
-	Logger::level = LogLevel::DEBUG;
+	Logger::level = LogLevel::Debug;
 	Logger::sinks.add(std::cout);
 
-	LOG(LogLevel::INFO, "##### OsuParser Class Tests #####");
+	LOG(LogLevel::Info, "##### OsuParser Class Tests #####");
 	
-	LOG(LogLevel::INFO, "\tImplementation behavior & I/O testing...");
+	LOG(LogLevel::Info, "\tImplementation behavior & I/O testing...");
 	OK &= test1(parser);
-	LOG(LogLevel::INFO, "\tDone\n");
+	LOG(LogLevel::Info, "\tDone\n");
 
-	LOG(LogLevel::INFO, "\tBasic testing...");
+	LOG(LogLevel::Info, "\tBasic testing...");
 	OK &= test2(parser);
-	LOG(LogLevel::INFO, "\tDone");
+	LOG(LogLevel::Info, "\tDone");
 
-	LOG(LogLevel::INFO, "\tAdvanced testing...");
+	LOG(LogLevel::Info, "\tAdvanced testing...");
 	OK &= test3(parser);
-	LOG(LogLevel::INFO, "\tDone");
+	LOG(LogLevel::Info, "\tDone");
 
-	LOG(LogLevel::INFO, "Result of the test (see log file): ", (OK ? "Success!" : "Error"));
-	LOG(LogLevel::INFO, "#################################");
+	LOG(LogLevel::Info, "Result of the test (see log file): ", (OK ? "Success!" : "Error"));
+	LOG(LogLevel::Info, "#################################");
 	return 0;
 }
