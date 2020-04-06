@@ -22,5 +22,8 @@ unset(__CONFIG_FILE CACHE)
 # Program behavior
 add_subdirectory(${TESTS_SRC_DIR})
 
+# TestFinder
+add_subdirectory(${TESTS_SRC_DIR}/testFinder)
+
 # TestParser
 add_subdirectory(${TESTS_SRC_DIR}/TestParser)

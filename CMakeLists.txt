@@ -31,23 +31,24 @@ unset(__CONFIG_FILE CACHE)
 # add Logger Library
 add_subdirectory(${SRC_DIR}/Logger)
 target_link_libraries(${CMAKE_PROJECT_NAME} Logger)
-set(LOGGER_SRC_DIR ${SRC_DIR}/Logger/jhache)
+file(MAKE_DIRECTORY ${OsuBot_BINARY_DIR}/logs)#keep the build folder clean
 
 # add jhack Library
 add_subdirectory(${PROJECT_SOURCE_DIR}/externals/jhack)
 target_link_libraries(${CMAKE_PROJECT_NAME} jhack)
-set(JHACK_SRC_DIR ${PROJECT_SOURCE_DIR}/externals/jhack/source)
 
 # source files
 set(SRC
     main.cpp
     Parser/OsuKey.cpp
     Parser/OsuParser.cpp
+    Finder/OsuFinder.cpp
 )
 set(INC
     ${CONFIG_FILE}
     Parser/OsuKey.hpp
     Parser/OsuParser.hpp
+    Finder/OsuFinder.hpp
 )
 
 list(TRANSFORM SRC PREPEND ${REL_SRC_DIR}/)
