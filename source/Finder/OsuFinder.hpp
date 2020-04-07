@@ -5,6 +5,12 @@
 
 typedef void	*HANDLE;
 
+/*
+ * Finder:
+ * This class will store a process handle (with no ownership), and automatically
+ * found where the corresponding executable is stored.
+ * This do not work with the special handle value returned by GetCurrentProcess().
+ */
 class Finder
 {
 public:
@@ -34,7 +40,7 @@ protected:
 /*
  * OsuFinder:
  * This class will look for a running Osu! process, and retrieve the directory of the executable.
- * From this, we can easily look for a map, with the findMap() method.
+ * From this, we can easily look for a map, using the findMap() method.
  */
 class OsuFinder: public Finder
 {
