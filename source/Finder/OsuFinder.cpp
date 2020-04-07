@@ -28,16 +28,16 @@ void		Finder::setProcessHandle(HANDLE processHandle)
 	{
 		char	ErrorStr[512];
 
-		LOG(LogLevel::Error,
-			"Finder: received a NULL handle, calling GetLastError() ...\n",
-			FormatMessageA(
-					FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-					NULL,
-					GetLastError(),
-					MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-					ErrorStr,
-					sizeof(ErrorStr),
-					NULL));
+		LOG(LogLevel::Error, "Finder: received a NULL handle.");
+		FormatMessageA(
+				FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+				NULL,
+				GetLastError(),
+				MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+				ErrorStr,
+				sizeof(ErrorStr),
+				NULL);
+		LOG(LogLevel::Debug, "GetLastError: ", ErrorStr);
 		return;
 	}
 
