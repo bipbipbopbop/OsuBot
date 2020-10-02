@@ -3,7 +3,7 @@
 
 #include "Logger.hpp"
 #include "jhack.hpp"
-#include "Parser/OsuParser.hpp"
+#include "OsuBot.hpp"
 
 #ifdef HAS_CONFIG_FILE
 # include "OsuBotConfig.h"
@@ -21,21 +21,28 @@ void	usage(char *progName)
 
 int		main(int ac, char **av)
 {
-	if (ac != 2)
-	{
-		usage(av[0]);
-		return 0;
-	}
-
 	jhack::start();
+	Logger::sinks.add(std::cout);
+	Logger::level = LogLevel::Debug;
 
-	const std::string	filename(av[1]);
-	OsuParser			parser;
+	std::string			mapFilename;
+	OsuBot				bot;
 
-	LOG(LogLevel::Info, "Parsing ", filename);
-	parser.parse(filename);
-	LOG(LogLevel::Info, "dumping ", filename);
-	parser.dump();
-
+	//bind bot to the process
+	//  if no process, wait for it to exist
+	//print currently playing map
+	//  if no map, wait for it to be played
+	bot.attachProcess();
+	while (bot.checkProcess() == false)
+	{
+		LOG(LogLevel::Info, "No Osu! process found.");
+		bot.attachProcess();
+		Sleep(5000);
+	}
+	LOG(LogLevel::Info, "Osu Process found.");
+	LOG(LogLevel::Info, "Waiting for a map to be started...");
+	while ((mapFilename = bot.getCurrentMap()) == "")
+		Sleep(5000);
+	LOG(LogLevel::Info, "a map is currently playing! : \"", mapFilename, "\"");
 	return 0;
 }

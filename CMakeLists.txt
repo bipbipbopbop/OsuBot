@@ -40,12 +40,14 @@ target_link_libraries(${CMAKE_PROJECT_NAME} jhack)
 # source files
 set(SRC
     main.cpp
+    OsuBot.cpp
     Parser/OsuKey.cpp
     Parser/OsuParser.cpp
     Finder/OsuFinder.cpp
 )
 set(INC
     ${CONFIG_FILE}
+    OsuBot.hpp
     Parser/OsuKey.hpp
     Parser/OsuParser.hpp
     Finder/OsuFinder.hpp
