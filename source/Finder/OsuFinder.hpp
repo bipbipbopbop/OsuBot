@@ -7,7 +7,7 @@ typedef void	*HANDLE;
 
 /*
  * Finder:
- * This class will store a process handle (with no ownership), and automatically
+ * This class will store a valid process handle (with no ownership), and automatically
  * found where the corresponding executable is stored.
  * This do not work with the special handle value returned by GetCurrentProcess().
  */
@@ -31,7 +31,8 @@ public:
 	 */
 	void		setProcessHandle(HANDLE processHandle);
 	HANDLE		getProcessHandle() const;
-	std::string	getprocessDir() const;
+	std::string	getProcessDir() const;
+
 protected:
 	HANDLE		_processHandle;
 	std::string	_processDirectory;
@@ -46,6 +47,7 @@ class OsuFinder: public Finder
 {
 public:
 	OsuFinder();
+	OsuFinder(HANDLE OsuProcesshandle);
 
 	/*
 	 * findMap(std::string):

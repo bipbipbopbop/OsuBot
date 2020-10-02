@@ -17,7 +17,12 @@ Finder::Finder(HANDLE processHandle)
 
 bool		Finder::isHandleValid() const
 {
-	return this->_processHandle != INVALID_HANDLE_VALUE;
+	DWORD	exitCodeProcess;
+
+	if (!GetExitCodeProcess(this->_processHandle, &exitCodeProcess))
+		return false;
+	return (this->_processHandle != INVALID_HANDLE_VALUE
+			&& exitCodeProcess == STILL_ACTIVE);//jhack::testProcessHandle(this->_processHandle));
 }
 
 void		Finder::setProcessHandle(HANDLE processHandle)
@@ -26,9 +31,17 @@ void		Finder::setProcessHandle(HANDLE processHandle)
 		LOG(LogLevel::Warning, "Finder: received an invalid handle value.");
 	else if (processHandle == NULL)
 	{
+		LOG(LogLevel::Warning, "Finder: received a NULL handle.");
+		return;
+	}
+
+	this->_processHandle = processHandle;
+	this->_processDirectory = jhack::getProcessPath(this->_processHandle).string();
+	if (processHandle != INVALID_HANDLE_VALUE && this->_processDirectory == "")
+	{
 		char	ErrorStr[512];
 
-		LOG(LogLevel::Error, "Finder: received a NULL handle.");
+		LOG(LogLevel::Error, "OsuFinder: Error while retrieving the executable path.");
 		FormatMessageA(
 				FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
 				NULL,
@@ -38,11 +51,7 @@ void		Finder::setProcessHandle(HANDLE processHandle)
 				sizeof(ErrorStr),
 				NULL);
 		LOG(LogLevel::Debug, "GetLastError: ", ErrorStr);
-		return;
 	}
-
-	this->_processHandle = processHandle;
-	this->_processDirectory = jhack::getProcessPath(this->_processHandle).string();
 }
 
 HANDLE		Finder::getProcessHandle() const
@@ -50,7 +59,7 @@ HANDLE		Finder::getProcessHandle() const
 	return this->_processHandle;
 }
 
-std::string	Finder::getprocessDir() const
+std::string	Finder::getProcessDir() const
 {
 	return this->_processDirectory;
 }
@@ -58,7 +67,11 @@ std::string	Finder::getprocessDir() const
 
 
 OsuFinder::OsuFinder()
-	: Finder::Finder(jhack::getProcessHandleByName(PROCESS_VM_READ, _T("osu!.exe")))
+	: Finder::Finder()
+{}
+
+OsuFinder::OsuFinder(HANDLE OsuProcesshandle)
+	: Finder::Finder(OsuProcesshandle)
 {}
 
 std::string	OsuFinder::findMap(std::string mapName) const
