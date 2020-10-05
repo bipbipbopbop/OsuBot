@@ -32,7 +32,8 @@ int		main(void)
 	LOG(LogLevel::Info, "\tDone\n");
 
 	//TODO: test2 with a dummy process, or current process, so we can retrieve his path
-	//also, if unnecessary, delete FinderExePath in OsuBotTestsConfig.h.in
+	//also, if necessary, add this in OsuBotTestsConfig.h.in :
+	//constexpr char FinderExePath[] = "@OsuBot_BINARY_DIR@";
 
 	LOG(LogLevel::Info, "Result of the test (see log file): ", (OK ? "Success!" : "Error"));
 	LOG(LogLevel::Info, "#################################");
