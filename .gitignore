@@ -1,8 +1,9 @@
 # Visual Code gitignore:
 .vscode
 
-# CMake gitignore:
+# "project generation"-related file:
 build/
+build.*
 
 ## Executables
 *.exe
