@@ -15,18 +15,8 @@ bool		OsuBot::attachProcess()
 	processHandle = jhack::getProcessHandleByName(PROCESS_VM_READ | PROCESS_QUERY_INFORMATION, _T("osu!.exe"));
 	if (processHandle == NULL)
 	{
-		char	ErrorStr[512];
-
 		LOG(LogLevel::Error, "OsuBot: received a NULL handle while retrieving osu! process handle.");
-		FormatMessageA(
-				FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-				NULL,
-				GetLastError(),
-				MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-				ErrorStr,
-				sizeof(ErrorStr),
-				NULL);
-		LOG(LogLevel::Debug, "GetLastError: ", ErrorStr);
+		LOG(LogLevel::Debug, "GetLastError: ", jhack::getLastError());
 		return false;
 	}
 	this->_finder.setProcessHandle(processHandle);
@@ -52,18 +42,8 @@ std::string	OsuBot::getCurrentMap()
 	OsuWHandle = jhack::findWindowhandleByName("osu!");
 	if (OsuWHandle == NULL)
 	{
-		char	ErrorStr[512];
-
 		LOG(LogLevel::Error, "OsuBot: received a NULL handle while retrieving osu! process window handle.");
-		FormatMessageA(
-				FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-				NULL,
-				GetLastError(),
-				MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-				ErrorStr,
-				sizeof(ErrorStr),
-				NULL);
-		LOG(LogLevel::Debug, "GetLastError: ", ErrorStr);
+		LOG(LogLevel::Debug, "GetLastError: ", jhack::getLastError());
 		return "";
 	}
 

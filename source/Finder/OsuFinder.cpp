@@ -39,18 +39,8 @@ void		Finder::setProcessHandle(HANDLE processHandle)
 	this->_processDirectory = jhack::getProcessPath(this->_processHandle).string();
 	if (processHandle != INVALID_HANDLE_VALUE && this->_processDirectory == "")
 	{
-		char	ErrorStr[512];
-
 		LOG(LogLevel::Error, "OsuFinder: Error while retrieving the executable path.");
-		FormatMessageA(
-				FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-				NULL,
-				GetLastError(),
-				MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-				ErrorStr,
-				sizeof(ErrorStr),
-				NULL);
-		LOG(LogLevel::Debug, "GetLastError: ", ErrorStr);
+		LOG(LogLevel::Debug, "GetLastError: ", jhack::getLastError());
 	}
 }
 
